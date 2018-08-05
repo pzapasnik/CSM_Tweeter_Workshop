@@ -6,6 +6,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -16,11 +17,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @NotEmpty
     private String username;
 
-    @NotNull
-    private String passworld;
+    @NotEmpty
+    private String password;
 
     @Column
     private String hash;
@@ -32,12 +33,13 @@ public class User {
     private String lastName;
 
     @Column
-    private boolean enable;
+    private boolean enable = true;
 
-    @NotNull
+    @NotEmpty
     @Email
     @Column(unique = true)
     private String email;
+
 
     public User() {
     }
@@ -54,12 +56,12 @@ public class User {
         this.username = username;
     }
 
-    public String getPassworld() {
-        return passworld;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPassworld(String passworld) {
-        this.passworld = BCrypt.hashpw(passworld, this.getHash());
+    public void setPassword(String passworld) {
+        this.password = BCrypt.hashpw(passworld, this.getHash());
     }
 
     public String getHash() {
@@ -102,7 +104,7 @@ public class User {
         this.email = email;
     }
 
-    public boolean checkPassworld(String passworld) {
-        return BCrypt.checkpw(passworld, this.getHash());
+    public boolean checkPassword(String password) {
+        return BCrypt.checkpw(password, this.getHash());
     }
 }
