@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -18,9 +20,11 @@ public class User {
     private Long id;
 
     @NotEmpty
+    @Column(nullable = false)
     private String username;
 
     @NotEmpty
+    @Column(nullable = false)
     private String password;
 
     @Column
@@ -37,8 +41,17 @@ public class User {
 
     @NotEmpty
     @Email
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
+
+    @OneToMany(mappedBy = "user")
+    Set<Tweet> tweets;
+
+    @OneToMany(mappedBy = "sendBy")
+    Set<Message> recivedMessage;
+
+    @OneToMany(mappedBy = "sendTo")
+    Set<Message> sendMessages;
 
 
     public User() {
@@ -106,5 +119,29 @@ public class User {
 
     public boolean checkPassword(String password) {
         return BCrypt.checkpw(password, this.getHash());
+    }
+
+    public Set<Tweet> getTweets() {
+        return tweets;
+    }
+
+    public void setTweets(Set<Tweet> tweets) {
+        this.tweets = tweets;
+    }
+
+    public Set<Message> getRecivedMessage() {
+        return recivedMessage;
+    }
+
+    public void setRecivedMessage(Set<Message> recivedMessage) {
+        this.recivedMessage = recivedMessage;
+    }
+
+    public Set<Message> getSendMessages() {
+        return sendMessages;
+    }
+
+    public void setSendMessages(Set<Message> sendMessages) {
+        this.sendMessages = sendMessages;
     }
 }

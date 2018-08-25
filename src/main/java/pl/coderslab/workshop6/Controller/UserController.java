@@ -23,14 +23,12 @@ public class UserController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loggin(Model model) {
         User user = new User ();
-        boolean pass = true;
         model.addAttribute("user", user);
-        model.addAttribute("pass", pass);
         return "index";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String submitLoggin(@Valid User user, BindingResult result, @PathVariable boolean pass) {
+    public String submitLoggin(@Valid User user, BindingResult result) {
 
 // Sprawdzm Czy użytkownik istnieje w Bazie danych
 
@@ -56,9 +54,24 @@ public class UserController {
         }
     }
 
+    @RequestMapping(value = "/registery", method = RequestMethod.GET)
+    public String registery(Model model) {
+        User user = new User();
+        model.addAttribute("user", user);
+        return "registery";
+    }
+
+    @RequestMapping(value = "/registery", method = RequestMethod.POST)
+    public String registerUser(@Valid User user, BindingResult result) {
+        if(result.hasErrors()) {
+            return "registery";
+        } else {
+            userRepository.save(user);
+            return "/" + user.getEmail() + "/home";
+        }
+    }
 
 
-    
     @RequestMapping(value = "/{email}/home", method = RequestMethod.GET)
     public String userHomePage(@PathVariable String email, Model model){
         return "";

@@ -19,19 +19,9 @@
     </style>
 </head>
 <body>
-<p>
-<form:form modelAttribute="user" method="post">
+        <form:form modelAttribute="user" method="post">
+            User Name: <form:input path="userName"/>
 
-    Email : <form:input path="email"/>
-    <form:errors path="email" cssClass="error"/>
-
-    Passworld : <form:password path="password"/>
-    <form:errors path="password" cssClass="error"/>
-    <input type="submit" value="Login"/>
-    <br>
-</form:form>
-</p>
-
-<a href="/registery">Register New User</a>
+        </form:form>
 </body>
 </html>
